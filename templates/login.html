@@ -1,0 +1,47 @@
+{% extends "main.html" %}
+{% block title %}
+      Login
+{% endblock title %}
+{% block Checkout %}
+<div class="container-xl">
+    <h1>{{error}}</h1>
+    <div class="row justify-content-center  align-items-center">
+        <aside class="col-sm-4">
+    <div class="card" style="width: 25rem;">
+    <article class="card-body ">
+    <a href="/signup" class="float-right btn btn-outline-primary">Sign up</a>
+    <h4 class="card-title mb-4 mt-1">LOGIN</h4>
+    <hr class="mb-4">
+         <form  action="/login" method="POST">
+            {% csrf_token %}
+        <div class="form-group">
+            <label>Your email</label>
+            <input name="Email" class="form-control {{emailerror.button}}" placeholder="Email" type="email">
+            {% if emailerror %}
+                    <small style="color:red"> {{ emailerror.error }} </small>
+            {% endif %}
+        </div> <!-- form-group// -->
+        <div class="form-group">
+            <a class="float-right" href="#">Forgot?</a>
+            <label>Your password</label>
+            <input class="form-control" name="password" placeholder="******" type="password">
+            {% if error %}
+                    <small style="color:red"> {{ error }} </small>
+            {% endif %}
+        </div> <!-- form-group// --> 
+        <div class="form-group"> 
+        <div class="checkbox">
+          <label> <input type="checkbox"> Save password </label>
+        </div> <!-- checkbox .// -->
+        </div> <!-- form-group// -->  
+        <div class="form-group">
+            <button type="submit" value="submit" class="btn btn-primary btn-block"> Login  </button>
+        </div> <!-- form-group// -->                                                           
+    </form>
+    </article>
+    </div> <!-- card.// --> 
+</div>
+</div>  
+
+   
+{% endblock Checkout %}

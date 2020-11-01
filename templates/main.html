@@ -1,0 +1,273 @@
+{% load cart %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>
+      {% block title %} {% endblock title %}</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="static/main.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+      <!-- header -->
+      <div class="container-fluid">
+        <div id="welcomeLine" class="row">
+          {% if request.session.customer %}
+            <div class="span6">Welcome!  <strong>{{ customer }}</strong></div>
+            <div class="span6">
+            <!-- <div class="pull-right">
+                <a href="#"><span class="">Fr</span></a>
+                <a href="#"><span class="">Es</span></a>
+                <span class="btn btn-mini">En</span>
+                <a href="#"><span>&#8377</span></a>
+                <span class="btn btn-mini">&#8377 155.00</span>
+                <a href="#"><span class="">&#8377</span></a>
+                <a href="#"><span class="btn btn-mini btn-primary"><i class="icon-shopping-cart icon-white"></i>  Itemes in your cart </span> </a> 
+            </div> -->
+            </div>
+        </div>
+        {% endif %}
+      </div>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="\">Navbar</a>
+        <button class="navbar-toggler  navbar-dark bg-dark" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse form-inline justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav"> 
+                <li class="nav-item ">
+          <form class="form-inline my-2 my-lg-0">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-white my-2 my-sm-0 " type="submit">Search</button>
+          </form>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="\">Home <span class="sr-only">(current)</span></a>
+        </li>
+          <li class="nav-item {% block navactiveProducts %} {% endblock navactiveProducts %}">
+            <a class="nav-link " href="/allproducts">All Products</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link " href="/cart">cart</a>
+          </li>
+          <li class="nav-item {% block navactiveAbout %} {% endblock navactiveAbout %}">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+          <li class="nav-item {% block navactiveContact %} {% endblock navactiveContact %}">
+            <a class="nav-link" href="/cantact">Contact</a>
+          </li>
+         <li class="nav-item dropdown active">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             
+             profile
+            </a>
+            <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+              {% if 'customer' not in request.session %}
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item " href="/login">Log in</a>
+              
+                   
+              {% else %}
+              <a class="dropdown-item" href="/checkoutpage">My account</a>
+              <div class="dropdown-divider"></div>
+                      <a class="dropdown-item " href="/logout">Log out</a>
+                      <div class="dropdown-divider"></div>
+              {% endif %}
+            </div></li>
+            
+        </ul>
+        </div>
+      </nav>
+<!-- end head -->
+
+{% block Checkout %}
+<div>
+<div class="slideshow-container">
+
+<div class="mySlides fade">
+  <div class="numbertext">1 / 3</div>
+  <img style="width:100%" src="static/images/carousel/1.png">
+  <div class="captiontext">Caption Text</div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext">2 / 3</div>
+  <img style="width:100%" src="static/images/carousel/1.png">
+  <div class="captiontext">Caption Two</div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext">3 / 3</div>
+  <img style="width:100%" src="static/images/carousel/1.png">
+  <div class="captiontext">Caption Three</div>
+</div>
+
+</div>
+<br>
+
+<div style="text-align:center">
+  <span class="dot"></span> 
+  <span class="dot"></span> 
+  <span class="dot"></span> 
+</div>
+</div>
+
+
+
+<div  class="container ">
+    <div id = "leftbox"> 
+
+        <nav class="navbar navbar-expand-lg">
+            <div  class="d-sm-none d-md-block collapse navbar-collapse">
+             
+    <ul id="sideManu navbar-nav" class="mcd-menu">
+      <li class="nav-item ">
+        <a href="" class="active">
+            <i class="fa fa-edit"></i>
+            <strong>home</strong>
+            <small>sweet home</small>
+        </a>
+    </li>
+      {% if Category.subCategory|length == 0 %}
+      <div class="alert alert-warning col-12">
+          <strong>
+              <h3>No catagory Found!</h3>
+          </strong>
+      </div>
+      {% elif Category.subCategory|length > 0 %}
+      {% csrf_token %}
+      {% for subCategory in Category.subCategory %}
+
+        <li>
+          <!-- /?category_type={{ subCategory.id }}" -->
+          <a href="/?category_type={{ subCategory.id }}" class="nav-link">
+              <i class="fa fa-home"></i>
+              <strong>{{ subCategory.subcategory}} </strong>
+              <small>sweet home</small>
+          </a>
+          <ul>
+          {% for Category in Category.Category %}
+              {%ifequal  Category.subcategory subCategory.subcategory %}
+            <li><a class="" href="?category_id={{ Category.id }} "><i class=""></i>{{Category.name}} </a></li>
+              {% endifequal %}
+            {% endfor %}
+          <!-- </a>/?category_id={{ Category.id }} -->
+        </ul></li>
+       {% endfor %}
+       {% endif %}
+    </nav>
+    </div>
+    </div>
+ 
+
+
+
+{% block body %}
+<div class="container">
+
+      
+      {% if Products|length == 0 %}
+      <div class="alert alert-warning col-12">
+          <strong>
+              <h3>No Product Found!</h3>
+          </strong>
+      </div>
+      {% elif Products|length > 0 %}
+      <div class="row">
+        {% for Products in Products %}
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="card h-100 width: 15rem;">
+            <a href="#"><img class="card-img-top" src="{{ Products.image.url }}" alt=""></a>
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="#">{{ Products.name}}</a>
+              </h4>
+              <h5>Rs.{{ Products.price }}</h5>
+              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+            </div>
+            <div>
+              {% if Products|is_in_cart:request.session.cart %}
+						<div class="row no-gutters">
+							<form action="/#{{Products.id}}" class="col-2 " method="post">
+								{% csrf_token %}
+								<input hidden type="text" name='product' value='{{Products.id}}'>
+								<input hidden type="text" name='remove' value='True'>
+								<input type="submit" value=" - " class="btn btn-block btn-light border-right">
+							</form>
+							<div class="text-center col">{{Products|cart_quantity:request.session.cart}} in Cart</div>
+							<form action="/#{{Products.id}}" class="col-2 " method="post">
+								{% csrf_token %}
+								<input hidden type="text" name='product' value='{{Products.id}}'>
+								<input type="submit" value=" + " class="btn btn-block btn-light border-left">
+							</form>
+						</div>
+						{% else %}
+						<form action="/#{{Products.id}}" method="POST" class="btn-block">
+              {% csrf_token %}
+							<input hidden type="text" name='product' value='{{Products.id}}'>
+							<input type="submit" class="float-right btn btn-light  form-control"
+								value="Add To Cart">
+						</form>
+						{% endif %}
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+            </div>
+          </div>
+        </div>
+       {% endfor %}
+       {% endif %}
+
+      </div>
+      <!-- /.row -->
+</div>
+<!-- /.container -->
+
+{% endblock body %}
+
+
+{% endblock Checkout %}
+
+
+    
+    <footer id="sticky-footer" class=" bg-dark text-white fixed-bottom">
+      <div class="container text-center">
+        <small>Copyright &copy; Your Website</small>
+      </div>
+    </footer>
+
+<!-- Footer -->
+    <!-- Optional JavaScript -->
+    <script>
+        var slideIndex = 0;
+        showSlides();
+        
+        function showSlides() {
+          var i;
+          var slides = document.getElementsByClassName("mySlides");
+          var dots = document.getElementsByClassName("dot");
+          for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";  
+          }
+          slideIndex++;
+          if (slideIndex > slides.length) {slideIndex = 1}    
+          for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" activeslider", "");
+          }
+          slides[slideIndex-1].style.display = "block";  
+          dots[slideIndex-1].className += " activeslider";
+          setTimeout(showSlides, 2000); // Change image every 2 seconds
+        }
+      
+        </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
