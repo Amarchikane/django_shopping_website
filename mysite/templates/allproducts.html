@@ -1,0 +1,64 @@
+{% extends "main.html" %}
+{% load cart %}
+{% block title %}
+      all products
+{% endblock title %}
+{% block Checkout %}
+<div class="container">
+    {% if Products|length == 0 %}
+    <div class="alert alert-warning col-12">
+        <strong>
+            <h3>No Product Found!</h3>
+        </strong>
+    </div>
+    {% elif Products|length > 0 %}
+    <div class="row align-items-center justify-content-center" >
+      {% for Products in Products %}
+      <div class="col-lg-3 col-md-6 mb-4" >
+        <div class="card h-100 align-items-center justify-content-center">
+          <a href="#"><img class="card-img-top" src="{{ Products.image.url }}" alt=""></a>
+          <div class="card-body text-center">
+            <h4 class="card-title align-items-center justify-content-center ">
+              
+              <a href="#" >{{ Products.name}}</a>
+           
+            </h4>
+            <h5>Rs.{{ Products.price }}</h5>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+         
+          </div>
+          <div>
+            {% if Products|is_in_cart:request.session.cart %}
+                      <div class="row ">
+                          <form action="/#{{Products.id}}" class="col-2 " method="post">
+                              {% csrf_token %}
+                              <input hidden type="text" name='product' value='{{Products.id}}'>
+                              <input hidden type="text" name='remove' value='True'>
+                              <input type="submit" value=" - " class="btn btn-block btn-light border-right">
+                          </form>
+                          <div class="text-center col">{{Products|cart_quantity:request.session.cart}} in Cart</div>
+                          <form action="/#{{Products.id}}" class="col-2 " method="post">
+                              {% csrf_token %}
+                              <input hidden type="text" name='product' value='{{Products.id}}'>
+                              <input type="submit" value=" + " class="btn btn-block btn-light border-left">
+                          </form>
+                      </div>
+                      {% else %}
+                      <form action="/#{{Products.id}}" method="POST" class="btn-block">
+            {% csrf_token %}
+                          <input hidden type="text" name='product' value='{{Products.id}}'>
+                          <input type="submit" class="float-right btn btn-light  form-control"
+                              value="Add To Cart">
+                      </form>
+                      {% endif %}
+          </div>
+          <div class="card-footer bg-white">
+            <small class="text-muted ">
+            <span style="color: transparent;  text-shadow: 0 0 0 rgb(212,175,55) ">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
+           </small>
+          </div>
+        </div>
+      </div>
+     {% endfor %}
+     {% endif %}
+     {% endblock Checkout %}

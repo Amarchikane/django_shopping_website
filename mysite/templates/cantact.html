@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+{% block navactiveContact %} 
+      active
+{% endblock navactiveContact %}
+{% block title %}
+      contact
+{% endblock title %}
+{% block body %}
+      <form action="/cantact" method="POST">
+        {% csrf_token %}
+        <input type="text" name="first">
+        <h1>{{name}}</h1>
+        <input type="submit" value="submit">
+        <h1>{{name}}</h1>
+    </form>
+    {% endblock body %}
