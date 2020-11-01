@@ -26,7 +26,7 @@ SECRET_KEY = '=p7(#96vqr+^7d#cd442ob=do=2z=^5b5#6&$_ltv5_8ec=zq*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','djangoappbild.herokuapp.com']
 
 
 # Application definition
